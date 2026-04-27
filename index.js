@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql   = require('mysql2/promise');
 const cors    = require('cors');
+const path    = require('path');
 
 const app  = express();
 const PORT = process.env.PORT;
@@ -9,6 +10,11 @@ if (!PORT) { console.error('ERRO: variavel PORT nao definida pelo Railway'); pro
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve o HTML principal em qualquer rota que não seja /ferias ou /teste
+app.get('/app', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // ── Parse da URL ─────────────────────────────────────────────────
 function parseMysqlUrl(url) {
